@@ -1,0 +1,51 @@
+## 2 курс - структуры данных
+## скобочная последовательность
+
+B = list(input()) # список скобок
+def bracket(stroka):
+    # проверяет скобочную последовательность (весь список)
+     #   если скобочная последовтаельность неправильная, выводит
+      #  номер первой неверной закрывающей скобки 
+    stack = []
+    idx = []
+    k=0
+    for i in stroka:
+        k += 1
+        if i in ('(','[','{'):# для откр.скобки
+            stack.append(i)
+            idx.append(k)
+        else:                 # для закрыв.скобки
+            if i not in (')',']','}'):
+                continue
+            elif len(stack) == 0:
+                return print(k)
+            elif (stack[-1] in ("(") and i in (")")) or ( stack[-1] in ('[') and i in (']')) or ( stack[-1] in ('{') and i in ('}')):
+                stack.pop()
+                idx.pop()
+    if len(stack) == 0:
+        return print('Success')
+    pos = stack.pop()
+    return print(idx[0])
+bracket(B)
+
+# высота дерева
+
+n = int(input())
+B = list(map(int, input().split()))
+m_height = [None] * n # массив для значений высоты
+def get_height(p): 
+    # p- значение/родитель
+    if m_height[p] is not None: # если уже посчитано/есть значение
+        return m_height[p] 
+    if p == -1: # если значение =-1 это корень 
+        return 1 # вернуть 1
+    h = 1 + get_height(B[p]) #
+    m_height[p] = h # высота 
+    return h
+mx = 0
+for i in B: # поиск высоты для каждого элемента вх.списка
+    h = get_height(i)
+    mx = max(h, mx) #
+print(mx)
+
+# симуляция обработки сетевых пакетов
