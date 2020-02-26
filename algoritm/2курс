@@ -49,3 +49,20 @@ for i in B: # поиск высоты для каждого элемента в�
 print(mx)
 
 # симуляция обработки сетевых пакетов
+import bisect
+size, n = map(int, input().split())
+M_bufer = [] # массив для времени выхода
+for i in range(n):
+    time_in, time_size = map(int, input().split())
+    del M_bufer[0:bisect.bisect(M_bufer, time_in)]# очистить буфер/удалить все пакеты с меньшим временем
+    if len(M_bufer) < size: # если буфер не полный 
+        if M_bufer: # если в буфере что то есть, то сравниваем время
+            otvet = max(M_bufer[-1], time_in)# if M_bufer 
+        else:
+            otvet = time_in
+        print(otvet)
+        M_bufer.append(otvet + time_size)
+    else: # если буфер полный
+        print(-1)
+        
+##
