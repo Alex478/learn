@@ -65,4 +65,25 @@ for i in range(n):
     else: # если буфер полный
         print(-1)
         
-##
+## стек с поддержкой максимума
+Stack = [] #
+q = int(input())
+max_stack = 0 # максим элемент
+for i in range(q): 
+    elem = input() 
+    if elem.startswith("push"): # добавляем элемент
+        a = int(elem.split("push ")[1]) # выделяем число из введенной строки
+        w = max(max_stack, a)       # выбираем максимум из элемента и сохраненного числа
+        Stack.append(w)
+        max_stack = w
+    elif elem.startswith("pop"): # удаляем последний добавленный элемент
+        Stack.pop()
+        if len(Stack) == 0: # если пуст стек то нуль
+            max_stack = 0
+        else:
+            max_stack = Stack[-1] # либо равен последнему элементу в стеке
+    elif elem.startswith("max"): # если мах 
+        print(Stack[-1])      # то печатаем последний элемент
+        
+## максимум в скользящем окне
+
