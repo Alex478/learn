@@ -118,4 +118,33 @@ print(str(A[Bufer[0]]))
 
 
 
-## 
+## построение кучи
+n = int(input())
+S = list(map(int,input().split()))
+#import heapq # проверка сортировки модулем heapq
+#S1 = list(map(int,input().split()))
+#heapq.heapify(S1) # сортировка списка кучей
+#print(S1) #
+Otvet = []
+
+def siftDown(i):# Просеивание элемента с индексом i вниз
+    left = 2 * i + 1
+    right = 2 * i + 2
+    if left >= len(S):# если элемент и так уже внизу, то конец
+        return
+    min_idx = left
+    if right < len(S) and S[right] < S[left]:
+        min_idx = right
+    if S[i] > S[min_idx]:
+        S[i], S[min_idx] = S[min_idx], S[i]
+        Otvet.append((i, min_idx)) 
+    siftDown(min_idx)
+
+for i in range(n//2,-1,-1):
+    siftDown(i)
+for j in range(n-1):# проверяем каждый элемент просеиванием вниз
+    siftDown(j)
+        
+print(len(Otvet))
+for i in Otvet:
+    print(i[0],i[1]) 
