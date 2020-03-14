@@ -148,3 +148,33 @@ for j in range(n-1):# проверяем каждый элемент просе�
 print(len(Otvet))
 for i in Otvet:
     print(i[0],i[1]) 
+    
+# паралельная обработка сетевых пакетов 
+import heapq
+
+def process(n, S):
+    Otvet = []
+    processors = [(0, proc) for proc in range(n)]# в массиве - элемент состояит из(время обработки(утапливается), процессор)
+    heapq.heapify(processors) # сделать мин кучу, сначала по первому элементу, потом по второму
+    for elem in S:
+        time, num_proc = heapq.heappop(processors)# убрали наименьший элемент из кучи
+        Otvet.append((num_proc, time))
+        heapq.heappush(processors, (time + elem, num_proc)) # к новому элементу добавляем время обработки предыдущего
+    return Otvet 
+    
+n, m = map(int, input().split())
+S = list(map(int, input().split()))
+Otvet = process(n, S)
+
+for i in Otvet:
+    print(i[0], i[1])
+### не мое решение    -
+from heapq import heappush, heappop
+
+H = [(0, cpu) for cpu in range(int(input().split()[0]))]
+for t in map(int, input().split()):
+    start, cpu = heappop(H)
+    print(cpu, start)
+    heappush(H, (start + t, cpu))
+###    
+###     
