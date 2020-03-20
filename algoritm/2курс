@@ -176,5 +176,43 @@ for t in map(int, input().split()):
     start, cpu = heappop(H)
     print(cpu, start)
     heappush(H, (start + t, cpu))
-###    
-###     
+###   
+
+
+## объединение таблиц
+import sys
+def Find(i): # найти родителя элемента
+    if i != parent[i]: #  поиск родителя/элемента со сжатием путей
+        parent[i] = Find(parent[i])
+    return parent[i]
+
+def Union(i, j): # объединить множества/таблицы/ т.д.
+    i_id, j_id = Find(i), Find(j)
+    if i_id == j_id:
+        parent[0] = max(parent[0], rank[i_id])
+        return parent[0]
+    if rank[i_id] > rank[j_id]:
+        parent[j_id] = i_id # изменение родителя у элемента
+        rank[i_id] += rank[j_id]   # увеличение высоты дерева/ранга родителя
+        parent[0] = max(parent[0], rank[i_id])  # поиск максимальной высоты дерева/ранга
+        return parent[0]
+    else:
+        parent[i_id] = j_id
+        rank[j_id] += rank[i_id]
+        parent[0] = max(parent[0], rank[j_id])  # поиск максимальной высоты дерева/ранга
+        return parent[0]
+    
+n, m = map(int, input().split())
+rank = [0] + list(map(int, input().split())) # сделаем начиная с 0 , чтобы было проще отслеживать номера элементов
+parent = [0] # в нулевом будем хранить максимальный элемент
+
+for i in range(1, n + 1):
+    parent.append(i) # добавка новых элементов в массив
+    if parent[0] < rank[i-1]: # поиск максимальной высоты дерева среди начальных элементов
+        parent[0] = rank[i-1]
+        
+for line in sys.stdin: # для каждой пары элементов 
+    x, y = map(int, line.split()) 
+    print(Union(x, y))    
+    
+### 
