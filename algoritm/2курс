@@ -215,4 +215,36 @@ for line in sys.stdin: # для каждой пары элементов
     x, y = map(int, line.split()) 
     print(Union(x, y))    
     
-### 
+### ### автоматический анализ программ
+import sys
+
+n, e, d = map(int, input().split())
+parent = [0]
+for i in range(1, n + 1): # добавим n элементов в массив
+    parent.append(i)
+q = 1    
+def Find(x): # найти элемент
+    if x != parent[x]: #  поиск родителя/элемента со сжатием путей
+        parent[x] = Find(parent[x])
+    return parent[x]
+
+def F_line(i, j, e, line):
+    global q
+    if e == 0 and d == 0:
+        return q
+    elif line < e:
+        if i < j:
+            parent[j] = Find(i) # присваиваем самого первого родителя мень.элемента
+            return q
+    else:
+        if Find(i) == Find(j):
+            q = 0
+            return q
+for line in range( e + d):
+    i, j = map(int, input().split())
+    if F_line(i, j, e, line) == 0:
+        break
+print(q)
+
+
+######
