@@ -247,4 +247,33 @@ for line in range( e + d):
 print(q)
 
 
-######
+###### телефонная книга - хэш-таблица
+n= int(input())
+Tel_book = {} # организуем словарь
+
+def add_number(elem): # добавить элемент в тел.книгу
+    # присвоить по индексу=elem[1]
+    Tel_book[elem[1]] = elem[2]
+
+def del_number(elem): # удалить элемент
+    if elem[1] in Tel_book:
+        del Tel_book[elem[1]]
+        
+def find_number(elem): # найти элемент
+    if elem[1] in Tel_book:
+        print(Tel_book[elem[1]])
+    else:
+        print('not found')
+        
+#### цепочки         
+for i in range(n):
+    elem= input()
+    if elem.startswith('add'):
+        elem = elem.split(' ')
+        add_number(elem)
+    elif elem.startswith('del'):
+        elem = elem.split(' ')
+        del_number(elem)
+    elif elem.startswith('find'):
+        elem = elem.split(' ')
+        find_number(elem)
