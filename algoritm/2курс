@@ -277,3 +277,171 @@ for i in range(n):
     elif elem.startswith('find'):
         elem = elem.split(' ')
         find_number(elem)
+        
+        
+        
+        
+## Хеширование цепочками 
+## признаюсь - это решение почти списал. у своего не смог выяснить проблему вывода ответа на экран
+# свое (если в задаче надо выводить !значения словаря и состоящие из одного элемента и из нескольких, то выводит либо слитно либо вместе)
+"""
+n= int(input())
+m = int(input())
+Tel_book = {}
+def f_hash(A): # вычисляем хэш индекс
+    idx_hash = 0 # хэш индекс
+    for i in range(len(A)):
+        idx_hash += (ord(A[i]) * 263**i)
+    idx_hash = idx_hash % 1000000007 % 5
+    return idx_hash # хэш индекс
+    
+def add_number(elem): # добавить элемент в тел.книгу
+    q = f_hash(elem[1]) #хэш 
+    if q in Tel_book:
+        ww = Tel_book[q]
+        for j in ww:
+            if j == elem[1]:
+                return
+        Tel_book[q] = elem[1], str(Tel_book[q])
+    else:
+        Tel_book[q] = elem[1]
+
+def del_number(elem): # удалить элемент
+    for t in Tel_book: # для каждого элемента в словаре
+        q = Tel_book[t]
+        for j in q:
+            if j == elem[1]:
+                del Tel_book[t]
+                return # а надо удалить часть значения а не весь элем
+
+def find_number(elem): # найти элемент
+    Values_name = Tel_book.values() # список значений словаря
+    for i in Values_name:
+        if elem[1] in i:
+            return print('yes')
+    print('no') 
+    
+def chesk_i(elem): # вывести список элемента если есть 
+    if int(elem[1]) in Tel_book: # если элемент есть в словаре, то выводим значение из словаря
+        LIST = Tel_book[int(elem[1])]
+        if len(LIST)>1:
+            print(' '.join(Tel_book[int(elem[1])])) # если значение словаря состоит из нескольких элементов - то выводит успешно
+                                                    # если значение словаря состоит из одного элемента - выведет значение с пробелами
+                                                    # не смог решить ))
+    else:
+        print()
+for i in range(m):
+    elem= input().split(' ')
+    if elem[0].startswith('add'):
+        add_number(elem)
+    elif elem[0].startswith('del'):
+        del_number(elem)
+    elif elem[0].startswith('find'):
+        find_number(elem)
+    elif elem[0].startswith('che'):
+        chesk_i(elem)
+        """
+"""
+import sys
+from functools import lru_cache
+
+@lru_cache(maxsize=None)
+def x_powered( power):
+    if power == 0:
+        return 1
+    if power == 1:
+        return x
+    else:
+        return x_powered(power - 1) * x
+
+def h(string): # посчитать хэш
+    result = 0
+    for i, ch in enumerate(string):
+        result += ((ord(ch) * x_powered(i)) % p)
+    return (result % p) % m
+
+def put( string):
+    if not find(string):
+        map[h(string)].insert(0, string)
+def find( string):
+    for i in map[h(string)]:
+        if string == i:
+            return True
+    return False
+
+def remove( string):
+    lst = map[h(string)]
+    for i, elem in enumerate(lst):
+        if string == elem:
+            del lst[i]
+            return True
+    return False
+
+def get_list(i):
+    return map[i]
+
+m = int(next(sys.stdin))
+n = int(next(sys.stdin))
+p = 1000000007
+x = 263
+map = {i: [] for i in range(m)}
+
+for i in range(n):
+    command = next(sys.stdin)
+    if command.startswith('add'):
+        _, string = command.split()
+        put(string)
+    elif command.startswith('find'):
+        _, string = command.split()
+        if find(string):
+            print('yes')
+        else:
+            print('no')
+    elif command.startswith('del'):
+        _, string = command.split()
+        remove(string)
+    elif command.startswith('check'):
+        _, i = command.split()
+        lst = get_list(int(i))
+        if lst:
+            print(" ".join(lst))
+        else:
+            print()
+            
+            
+###    Поиск образца в тексте
+
+def hash_i(s): # вычисляем хэш индекс
+    idx_hash = 0 # хэш индекс
+    for i in range(len(s)):
+        idx_hash += ord(s[i])# % 1000000007 % 5 # а может убрать  % 1000000007 % 5 - ошибка на 47 задаче
+    return idx_hash # хэш индекс
+
+def check(pattern, stroka, pos): #  сравнение по-символьно образца и куска текста
+    for j in range(len_pattern):
+        if pattern[j] != stroka[j]:
+            return
+    return print(pos, end=' ')
+    
+def find_hash(idx, pattern, st): # поиск образца в строке
+    global hash_text
+    hash_text = hash_text - ord(string[idx - 1]) + ord(string[idx + len_pattern-1]) # хэш части
+    if hash_text == hash_pat and pattern == st:
+        print(idx, end=' ')
+
+pattern = input() # образец
+string = input() # строка 
+len_pattern = len(pattern) # длина образца
+len_string = len(string) # длина строки
+
+hash_pat = hash_i(pattern) # хэш образца
+hash_text = hash_i(string[0:len_pattern]) # хэш начала строки
+
+if hash_pat == hash_text: # проверяем образец и начало строки
+    check(pattern, string[0:len_pattern], 0)
+
+for i in range(1, len_string - len_pattern + 1): # 
+    find_hash(i, pattern, string[i:i+len_pattern])    
+    
+
+### 
