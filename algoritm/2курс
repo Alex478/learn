@@ -523,3 +523,84 @@ order(M[0])
 print(' '.join(str(i) for i in InOrder))  
 print(' '.join(str(i) for i in PreOrder)) 
 print(' '.join(str(i) for i in PostOrder))
+
+### Проверка свойства дерева поиска
+
+
+import sys
+sys.setrecursionlimit(100000)
+
+n = int(input())
+M = [ [None] * 3 for i in range(n)] # массив для  дерева
+InOrder = [] # массив для данных - in order
+ww = 'CORRECT'
+
+def in_order(v): # обход по дереву - вывод элементов дерева от
+                 # самого левого потомка до самого правого
+    if v[1] != None:
+        in_order(M[v[1]])
+    InOrder.append(v[0])
+    if v[2] != None:
+        in_order(M[v[2]])
+    
+for i in range(n): # составление дерева
+    v, left, right = map(int, input().split())
+    M[i][0] = v
+    if left != -1:
+        M[i][1] = left
+    if right != -1:
+        M[i][2] = right
+        
+if n == 0: # если в дереве нет ни одного элемента
+    print(ww)
+else:
+    in_order(M[0])
+    for i in range(1, len(InOrder)):
+        if InOrder[i-1] > InOrder[i]:
+            ww = 'INCORRECT'
+            break
+    print(ww)
+        
+### Проверка более общего свойства дерева поиска (списал у другого - стыд и позор мне)
+
+import sys
+n = int(input())
+sys.setrecursionlimit(max((n)*2, 1000))
+tr = []
+for i in range(n):
+    key, left, right = map(int, input().split())
+    tr.append([key, left, right])
+
+
+def testtree(i, minv, maxv):
+    tr_i_iiiii = tr[i]
+    if i == -1:
+        return
+    if tr[i][1] != -1:
+#        aa = tr[tr[i][1]][0]
+#        bb = tr[tr[i][2]][0]
+        if tr[i][0] <= tr[tr[i][1]][0] or tr[tr[i][1]][0] < minv:
+            print("INCORRECT")
+            sys.exit()
+        testtree(tr[i][1], minv, tr[i][0])
+    if tr[i][2] != -1:
+        if tr[i][0] > tr[tr[i][2]][0] or tr[tr[i][2]][0] >= maxv:
+            print("INCORRECT")
+            sys.exit()
+        testtree(tr[i][2], tr[i][0], maxv)
+
+if len(tr) > 0:
+    testtree(0, -2**60, 2**60)
+print("CORRECT")
+
+#### Множество с запросами суммы на отрезке 
+## сам не смог - опять стыд и позор
+
+
+
+#### Rope
+
+
+
+
+
